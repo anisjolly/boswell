@@ -72,6 +72,7 @@
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/boswell.js"></script>
+    <script src="js/jquery.xml2json.js"></script>
 	  
 <script>
 $(document).ready(function(){

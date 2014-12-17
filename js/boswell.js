@@ -149,9 +149,25 @@ function wiclass(id, sunrise, sunset) {
 }
 
 function getLights() {
+  var content='';
   $.getJSON("json.htm?type=command&param=getlightswitches",function(result){
-    return result.result[0].Name;  
+    $.each(result.result, function () {
+       content+="<p>"+$(this).Name+"</p>";  
+    });
+  $('#page_content').append(content);
   });
+}
+
+function getTubeStatus() {
+  $.ajax({url:'get_tflTube.php',success:function(xml){
+    var json=$.xml2json(xml);
+    for (i=0;i<json.LineStatus.length;i++) {
+      span='#tfl_tube_status_'+json.LineStatus[i].Line['Name'].toLowerCase().replace(/ /g,'');
+      $(span).text(json.LineStatus[i].Status['Description']);
+    }
+  },error:function(){
+    alert('error fetching TFL data');
+  }});
 }
 
 function getTime() {
@@ -160,25 +176,20 @@ function getTime() {
   });
 }
 
-function hideContent() {
-  $('#page_content').effect('slide',{direction:'left',mode:'hide'},500);
-}
-
 function showContent() {
   $('#page_content').find('.panel').hide();
-  $('#page_content').show();
-//  $('#page_content').find('.panel').fadeIn();
+  $('#page_content').fadeIn(100);
   $('#page_content .panel').each(function(index){
-    $(this).delay(130*index).fadeIn(130);
+    $(this).delay(50*index).fadeIn(300);
   });
 }
 
 function loadPage(page) {
   page=page+'.php';
-
-//  hideContent();
-  $.ajax({url:page}).done(function(result){
-    $('#page_content').html(result);
-    showContent();
+  $('#page_content').effect('slide',{direction:'left',mode:'hide'},500,function(){
+    $.ajax({url:page}).done(function(result){
+      $('#page_content').html(result);
+      showContent();
+    });
   });
 }
