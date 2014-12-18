@@ -1,9 +1,10 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-body">
         <h4>Tube Status</h4>
-        <table class="status"> 
+        <!--<table class="table table-condensed tfl_tube_status">-->
+        <table class="tfl_tube_status"> 
           <tr>
             <td class="tfl_tube bakerloo">Bakerloo</td>
             <td id="tfl_tube_status_bakerloo"></td>
@@ -61,28 +62,24 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-body">
-        <h4>Departures From Maidenhead</h4>
-          <table class="table train_status">
-          <tr>
-            <th>Time</th>
-            <th>Destination</th>
-            <th>Status</th>
-          </tr>
-<?php
-$contents=file_get_contents('https://www.firstgreatwestern.co.uk/Services/LDB.aspx?method=departures&crs=MAI');
-$trains=json_decode($contents,true);
-foreach ($trains[0]['Items'] as $service) {
-  echo '<tr>';
-  echo '<td>'.$service['STD'].'</td>';
-  echo '<td>'.$service['Destinations'][0]['Location'].'</td>';
-  echo '<td>'.$service['ETD'].'</td>';
-  echo '</tr>';
-}
-?>
-        </table>
+        <h4>Departures from Maidenhead</h4>
+
+        <div class="container-fluid div-table">
+          <div class="row header">
+            <div class="col-md-2">Time</div>
+            <div class="col-md-7">Destination</div>
+            <div class="col-md-3">Status</div>
+          </div>
+          <div id="train_content">
+
+          </div>
+        </div>
+
+        <button type="button" id="train_show_more" class="btn btn-primary btn-block" data-position="up"><i class="fa fa-chevron-circle-down"></i></button>
+        <p id="train_wait" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i> Loading...</p>
       </div>
     </div>
   </div>
@@ -90,7 +87,24 @@ foreach ($trains[0]['Items'] as $service) {
 
 <script>
 $(document).ready(function(){
+  $('#train_show_more').hide();
   getTubeStatus();
-});
-</script>
+  getTrainStatus();
 
+  $('#train_show_more').click(function(){
+    if ($('#train_show_more').data('position')=='up') {
+      $('#train_content_more').slideDown(300);
+      $('#train_show_more i').removeClass('fa-chevron-circle-down');
+      $('#train_show_more i').addClass('fa-chevron-circle-up');
+      $('#train_show_more').data('position','down');
+    } else {
+      $('#train_content_more').slideUp(300);
+      $('#train_show_more i').removeClass('fa-chevron-circle-up');
+      $('#train_show_more i').addClass('fa-chevron-circle-down');
+      $('#train_show_more').data('position','up');
+    }
+    $('#train_show_more').blur();
+  });
+});
+
+</script>

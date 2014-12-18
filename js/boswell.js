@@ -170,6 +170,31 @@ function getTubeStatus() {
   }});
 }
 
+function getTrainStatus() {
+  $.getJSON('get_train.php',function(json){
+    $('#train_content').hide();;
+    //$('#train_content').empty();
+    var count=0;
+    var rows='';
+    $.each(json[0].Items,function(i, service){
+      if (count==4) {
+        hidden=true;
+        rows+='<div id="train_content_more">';
+      }
+      rows+='<div class="row"><div class="col-md-2">'+service.STD+'</div><div class="col-md-7">'+service.Destinations[0].Location+'</div><div class="col-md-3">'+service.ETD+'</div></div>';
+      count++;
+    });
+    if (count>3) rows+='</div>';
+    $('#train_content').append(rows);
+    $('#train_content_more').hide();;
+    $('#train_wait').slideUp(150,function() {
+      $('#train_content').slideDown(300,function() {
+        $('#train_show_more').slideDown(200);
+      });
+    });
+  });
+}
+
 function getTime() {
   $.getJSON("json.php?action=time",function(result){
     page_updateTime(result.time); 
@@ -190,6 +215,17 @@ function loadPage(page) {
     $.ajax({url:page}).done(function(result){
       $('#page_content').html(result);
       showContent();
+    });
+  });
+}
+
+function refreshLights() {
+  $('.boswell-light i').each(function(i, light){
+    $.getJSON("json.php?action=lightstatus&idx="+$(light).data('idx'),function(json){
+      if (json.result[0].Status!='Off')
+        $(light).attr('class','on');
+      else
+        $(light).attr('class','off');
     });
   });
 }
