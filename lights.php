@@ -37,14 +37,11 @@ if ($count>0)
 <script>
 $('document').ready(function() {
   refreshLights();
+  setInterval(function(){refreshLights();},10000);
 });
 
 $('.boswell-light').click(function() {
-  var light=$(this).find('i');
-  if ($(light).attr('class')=='on') {
-    $(light).attr('class','off');
-  } else {
-    $(light).attr('class','on');
-  }
+  toggleLight($(this).find('i'));
 });
+
 </script>

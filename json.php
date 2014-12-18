@@ -17,6 +17,15 @@ function json_from_array($array) {
   return $strout;
 }
 
+
+function setLight() {
+  $url='http://192.168.1.52:8080/json.htm?type=command&param=switchlight&idx='.$_GET['idx'].'&switchcmd='.$_GET['state'];
+  $out=file_get_contents($url);
+  return $out;
+}
+
+
+
 $action=$_GET['action'];
 
 switch ($action) {
@@ -30,6 +39,9 @@ switch ($action) {
   case "lightstatus":
     if (isset($_GET['idx']))
       $result=file_get_contents('http://192.168.1.52:8080/json.htm?type=devices&rid='.$_GET['idx']);
+    break;
+  case 'setLight':
+    $result=setLight();
     break;
 }
 

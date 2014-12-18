@@ -148,16 +148,6 @@ function wiclass(id, sunrise, sunset) {
    return condition;
 }
 
-function getLights() {
-  var content='';
-  $.getJSON("json.htm?type=command&param=getlightswitches",function(result){
-    $.each(result.result, function () {
-       content+="<p>"+$(this).Name+"</p>";  
-    });
-  $('#page_content').append(content);
-  });
-}
-
 function getTubeStatus() {
   $.ajax({url:'get_tflTube.php',success:function(xml){
     var json=$.xml2json(xml);
@@ -227,5 +217,23 @@ function refreshLights() {
       else
         $(light).attr('class','off');
     });
+  });
+}
+function toggleLight(light) {
+  var state='On';
+  if ($(light).attr('class')=='on') 
+    state='Off';
+
+  var url='json.php?action=setLight&state='+state+'&idx='+$(light).data('idx');
+
+  $.getJSON(url,function(json){
+    if (json.status=="OK") {
+      if ($(light).attr('class')=='on') 
+        $(light).attr('class','off');
+      else
+        $(light).attr('class','on');
+    }
+    //leave it half a second, then check in case that light has any slaves...
+    setTimeout(function(){refreshLights();},500);
   });
 }

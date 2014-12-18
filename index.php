@@ -23,6 +23,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a href="/" class="navbar-brand"><i class="fa fa-male"></i> Boswell</a>
+
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -45,9 +46,11 @@
               <a href="#">Link</a>
             </li>
 -->
+<!--
             <li>
               <a href="#"><i class="fa fa-cogs"></i> Settings</a>
             </li>
+-->
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
