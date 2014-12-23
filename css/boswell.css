@@ -6023,6 +6023,15 @@ input[type="checkbox"] {
 }
 
 
+/* ------ GENERAL FIXES ------ */
+.panel-body p {
+  font-weight: 300;
+}
+div.row>h2 {
+  margin-left: 15px;
+  margin-top:0;
+}
+
 .panel-default.panel-home {
   text-align: center;
   padding-top: 15px;
@@ -6038,6 +6047,8 @@ a>.panel-default.panel-home {
 .page-header.page-notitle {
   border-bottom: 0;
 }
+/* ------ END GENERAL FIXES ------ */
+
 .panel-home h1>i.fa, .panel-home h1>i.wi {
   margin-right: 30px;
 }
@@ -6052,8 +6063,10 @@ a>.panel-default.panel-home {
 }
 
 
+/* ------ STUFF FOR THE TUBE STATUS ------ */
 table.tfl_tube_status tr {
   border-bottom: 2px solid #ffffff;
+  font-size: 13px;
 }
 
 table.tfl_tube_status tr td:nth-child(2) {
@@ -6068,6 +6081,24 @@ td.tfl_tube {
   padding-bottom: 2px;
 }
 
+.panel.tfltube {
+  font-size: 13px;
+}
+
+.panel-heading.bakerloo { background: #996633; color: #ffffff; }
+.panel-heading.central { background: #cc3333; color: #ffffff; }
+.panel-heading.circle { background: #ffcc00; color: #000000; }
+.panel-heading.district { background: #006633; color: #ffffff; }
+.panel-heading.hammersmithandcity { background: #cc9999; color: #000000; }
+.panel-heading.jubilee { background: #868f98; color: #ffffff; }
+.panel-heading.metropolitan { background: #660066; color: #ffffff; }
+.panel-heading.northern { background: #000000; color: #ffffff; }
+.panel-heading.piccadilly { background: #000099; color: #ffffff; }
+.panel-heading.victoria { background: #0099cc; color: #000000; }
+.panel-heading.waterlooandcity { background: #66cccc; color: #000000; }
+.panel-heading.overground { background: #ff6600; color: #000000; }
+.panel-heading.dlr { background: #009999; color: #000000; }
+
 td.tfl_tube.bakerloo {background: #996633;}
 td.tfl_tube.central {background: #cc3333;}
 td.tfl_tube.circle {background: #ffcc00;color:#000000;}
@@ -6081,6 +6112,8 @@ td.tfl_tube.victoria {background: #0099cc; color:#000000;}
 td.tfl_tube.waterlooandcity {background: #66cccc; color:#000000;}
 td.tfl_tube.overground {background: #ff6600;color: #000000;}
 td.tfl_tube.dlr {background: #009999;color:#000000;}
+/* ------ END TUBE STUFF ------ */
+
 
 div.div-table div {
   font-size: 13px;
@@ -6097,6 +6130,7 @@ div.div-table div {
   padding: 2px 0 2px 2px;
 }
 
+/* ------ STUFF FOR THE LIGHTS PAGE ------ */
 div.panel.panel-default.boswell-light {
   font-weight: 300;
 }
@@ -6108,8 +6142,18 @@ div.panel.panel-default.boswell-light i {
   width: 32px;
 }
 div.panel.panel-default.boswell-light i.off {
-  background: url(/images/lightbulb_off.png);
+  background: url(/images/light-off.png);
 }
 div.panel.panel-default.boswell-light i.on {
-  background: url(/images/lightbulb_on.png);
+  background: url(/images/light-on.png);
+}
+/* ------- END OF STUFF FOR LIGHTS PAGE ------ */
+
+/* ------- STUFF FOR TRAINS PAGE ------ */
+div.service-detail {
+  display: none;
+}
+div.service-detail table {
+  font-weight: 300;
+  font-size: 14px;
 }

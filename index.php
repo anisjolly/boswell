@@ -1,3 +1,10 @@
+<?php
+$_page='main';
+if (isset($_GET['page'])) {
+  $_page=$_GET['page'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,7 +19,7 @@
     <link href="css/boswell.css" rel="stylesheet">
     <link href="font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="weather-icons-1.3/css/weather-icons.min.css" rel="stylesheet">
-    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <!--<link href="css/jquery-ui.min.css" rel="stylesheet">-->
 
 
   </head>
@@ -22,7 +29,7 @@
       <div class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand"><i class="fa fa-male"></i> Boswell</a>
+          <span href="#" class="navbar-brand" onclick="loadPage('main')"><i class="fa fa-male"></i> Boswell</span>
 
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
@@ -72,6 +79,7 @@
     </div> <!-- /container -->
 
     <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/velocity.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/boswell.js"></script>
@@ -83,9 +91,10 @@ $(document).ready(function(){
   $('.navbar-right').hide();
   getWeather();
   getTime();
-  $('.navbar-right').fadeIn();
+  /*$('.navbar-right').fadeIn();*/
+  $('.navbar-right').velocity("fadeIn",{duration: 300});
 
-  loadPage('main');
+  loadPage('<?php echo $_page; ?>');
 
   setInterval(function(){
     getWeather();

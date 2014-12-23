@@ -1,69 +1,27 @@
-<div class="row">
+<div class="row"> 
   <div class="col-md-4">
-    <div class="panel panel-default">
+    <div class="panel panel-default" onclick="loadPage('tfl_tube')">
       <div class="panel-body">
         <h4>Tube Status</h4>
-        <!--<table class="table table-condensed tfl_tube_status">-->
         <table class="tfl_tube_status"> 
-          <tr>
-            <td class="tfl_tube bakerloo">Bakerloo</td>
-            <td id="tfl_tube_status_bakerloo"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube central">Central</td>
-            <td id="tfl_tube_status_central"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube circle">Circle</td>
-            <td id="tfl_tube_status_circle"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube district">District</td>
-            <td id="tfl_tube_status_district"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube hammersmithandcity">Hammersmith and City</td>
-            <td id="tfl_tube_status_hammersmithandcity"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube jubilee">Jubilee</td>
-            <td id="tfl_tube_status_jubilee"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube metropolitan">Metropolitan</td>
-            <td id="tfl_tube_status_metropolitan"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube northern">Northern</td>
-            <td id="tfl_tube_status_northern"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube piccadilly">Piccadilly</td>
-            <td id="tfl_tube_status_piccadilly"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube victoria">Victoria</td>
-            <td id="tfl_tube_status_victoria"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube waterlooandcity">Waterloo and City</td>
-            <td id="tfl_tube_status_waterlooandcity"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube overground">Overground</td>
-            <td id="tfl_tube_status_overground"></td>
-          </tr>
-          <tr>
-            <td class="tfl_tube dlr">DLR</td>
-            <td id="tfl_tube_status_dlr"></td>
-          </tr>
+<?php
+$str=file_get_contents('http://cloud.tfl.gov.uk/TrackerNet/LineStatus');
+$xml=simplexml_load_string($str);
+foreach ($xml->LineStatus as $line) {
+  $sn=str_replace(' ','',strtolower($line->Line['Name']));
+  echo '          <tr>'.chr(10);
+  echo '            <td class="tfl_tube '.$sn.'">'.$line->Line['Name'].'</td>'.chr(10);
+  echo '            <td id="tfl_tube_status_'.$sn.'">'.$line->Status['Description'].'</td>'.chr(10);
+  echo '          </tr>'.chr(10);
+}
+?>
         </table>
       </div>
     </div>
   </div>
 
   <div class="col-md-4">
-    <div class="panel panel-default">
+    <div class="panel panel-default" id="train-panel" onclick="loadPage('trains')">
       <div class="panel-body">
         <h4>Departures from Maidenhead</h4>
 
@@ -71,40 +29,40 @@
           <div class="row header">
             <div class="col-md-2">Time</div>
             <div class="col-md-7">Destination</div>
-            <div class="col-md-3">Status</div>
+            <div class="col-md-3">Due</div>
           </div>
-          <div id="train_content">
-
+          <div id="service-content">
+<?php
+require("libs/OpenLDBWS.php");
+$openldbws = new OpenLDBWS('4b58bab8-22d9-4a31-937a-9a6649e0134f');
+$text = $openldbws->GetDepartureBoard(10,"MAI");
+$count=0;
+foreach ($text->GetStationBoardResult->trainServices->service as $service) {
+  $count++; if ($count>6) break;
+  echo '            <div class="row">'.chr(10);
+  echo '              <div class="col-md-2">'.$service->std.'</div>'.chr(10);
+  echo '              <div class="col-md-7">'.$service->destination->location->locationName.'</div>'.chr(10);
+  echo '              <div class="col-md-3">'.$service->etd.'</div>'.chr(10);
+  echo '            </div>'.chr(10);
+}
+?>
           </div>
-        </div>
-
-        <button type="button" id="train_show_more" class="btn btn-primary btn-block" data-position="up"><i class="fa fa-chevron-circle-down"></i></button>
-        <p id="train_wait" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i> Loading...</p>
-      </div>
-    </div>
-  </div>
-</div>
+        </div> <!-- container-fluid / div-table -->
+      </div> <!-- panel-body -->
+    </div> <!-- panel -->
+  </div> <!-- column -->
+</div> <!-- row -->
 
 <script>
 $(document).ready(function(){
-  $('#train_show_more').hide();
-  getTubeStatus();
-  getTrainStatus();
+  setInterval(function(){
+    getTubeStatus();
+  }, 60000);
+  //getTrainStatus();
 
-  $('#train_show_more').click(function(){
-    if ($('#train_show_more').data('position')=='up') {
-      $('#train_content_more').slideDown(300);
-      $('#train_show_more i').removeClass('fa-chevron-circle-down');
-      $('#train_show_more i').addClass('fa-chevron-circle-up');
-      $('#train_show_more').data('position','down');
-    } else {
-      $('#train_content_more').slideUp(300);
-      $('#train_show_more i').removeClass('fa-chevron-circle-up');
-      $('#train_show_more i').addClass('fa-chevron-circle-down');
-      $('#train_show_more').data('position','up');
-    }
-    $('#train_show_more').blur();
-  });
+//  $('#train-panel').click(function() {
+//    loadPage('train_departures');
+//  });
 });
 
 </script>

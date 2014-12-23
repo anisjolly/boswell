@@ -1,5 +1,5 @@
 function getWeather() {
-  $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Maidenhead,GB",function(result){
+ $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Maidenhead,GB",function(result){
     id=result.weather[0].id;
     sunrise=result.sys.sunrise;
     sunset=result.sys.sunset;
@@ -149,39 +149,60 @@ function wiclass(id, sunrise, sunset) {
 }
 
 function getTubeStatus() {
-  $.ajax({url:'get_tflTube.php',success:function(xml){
+  $.ajax({url:'json.php?action=getTFLStatus',success:function(xml){
     var json=$.xml2json(xml);
     for (i=0;i<json.LineStatus.length;i++) {
       span='#tfl_tube_status_'+json.LineStatus[i].Line['Name'].toLowerCase().replace(/ /g,'');
       $(span).text(json.LineStatus[i].Status['Description']);
     }
-  },error:function(){
-    alert('error fetching TFL data');
   }});
 }
 
 function getTrainStatus() {
-  $.getJSON('get_train.php',function(json){
-    $('#train_content').hide();;
-    //$('#train_content').empty();
-    var count=0;
-    var rows='';
-    $.each(json[0].Items,function(i, service){
-      if (count==4) {
-        hidden=true;
-        rows+='<div id="train_content_more">';
-      }
-      rows+='<div class="row"><div class="col-md-2">'+service.STD+'</div><div class="col-md-7">'+service.Destinations[0].Location+'</div><div class="col-md-3">'+service.ETD+'</div></div>';
-      count++;
-    });
-    if (count>3) rows+='</div>';
-    $('#train_content').append(rows);
-    $('#train_content_more').hide();;
-    $('#train_wait').slideUp(150,function() {
-      $('#train_content').slideDown(300,function() {
-        $('#train_show_more').slideDown(200);
-      });
-    });
+//  $.getJSON('json.php?action=getTrainDepartures',function(json){
+//    $('#train_content').hide();;
+//    //$('#train_content').empty();
+//    var count=0;
+//    var rows='';
+//    $.each(json[0].Items,function(i, service){
+//      if (count<6) {
+//        rows+='<div class="row"><div class="col-md-2">'+service.STD+'</div><div class="col-md-7">'+service.Destinations[0].Location+'</div><div class="col-md-3">'+service.ETD+'</div></div>';
+//        count++;
+//      }
+//    });
+//    if (count==6) rows+='<p class="more-ellipsis"><i class="fa fa-plus-circle"></i></p>'; 
+//
+//    $('#train_content').append(rows);
+// //   $('#train_content_more').hide();;
+// //   $('#train_wait').slideUp(150,function() {
+// //     $('#train_content').slideDown(300,function() {
+// //     });
+// //   });
+//  });
+}
+
+function getTrainServiceDetail(panel) {
+  var id=$(panel).data('id');
+  var url='json.php?action=getTrainServiceDetail&id='+encodeURIComponent(id);
+  $.getJSON(url,function(json){
+    var text='<p>Platform: ';
+    if (json.GetServiceDetailsResult.platform!='')
+      text+=json.GetServiceDetailsResult.platform;
+    else
+      text+='TBC';
+    text+='<span class="pull-right">'+json.GetServiceDetailsResult.operator+'</span></p>';
+    text+='<p>Calling at:</p>';
+    text+='<table class="table table-condensed ">';
+
+    $.each(json.GetServiceDetailsResult.subsequentCallingPoints.callingPointList.callingPoint,function(i, callingPoint){
+      text+='<tr><td>'+callingPoint.locationName+'</td><td>'+callingPoint.st+'</td><td';
+      if (callingPoint.et!='On time') text+=' class="text-danger"';
+      text+='>'+callingPoint.et+'</td></tr>';
+    }); 
+
+    text+='</table>';
+
+    $(panel).find('.service-detail').html(text);
   });
 }
 
@@ -192,26 +213,31 @@ function getTime() {
 }
 
 function showContent() {
-  $('#page_content').find('.panel').hide();
-  $('#page_content').fadeIn(100);
-  $('#page_content .panel').each(function(index){
-    $(this).delay(50*index).fadeIn(300);
-  });
+  $('#page_content > .row').children().hide({complete:function() {
+    $('#page_content').fadeIn(100);
+    $('#page_content > .row').children().each(function(index){
+      $(this).delay(50*index).fadeIn(300);
+    });
+  }});
 }
 
 function loadPage(page) {
   page=page+'.php';
-  $('#page_content').effect('slide',{direction:'left',mode:'hide'},500,function(){
+
+  $('#page_content').hide('slide',{direction:'left'},400,function(){
+
     $.ajax({url:page}).done(function(result){
       $('#page_content').html(result);
       showContent();
     });
+
   });
+
 }
 
 function refreshLights() {
   $('.boswell-light i').each(function(i, light){
-    $.getJSON("json.php?action=lightstatus&idx="+$(light).data('idx'),function(json){
+    $.getJSON("json.php?action=getLights&idx="+$(light).data('idx'),function(json){
       if (json.result[0].Status!='Off')
         $(light).attr('class','on');
       else
@@ -234,6 +260,6 @@ function toggleLight(light) {
         $(light).attr('class','on');
     }
     //leave it half a second, then check in case that light has any slaves...
-    setTimeout(function(){refreshLights();},500);
+    setTimeout(function(){refreshLights();},1000);
   });
 }
