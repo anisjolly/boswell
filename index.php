@@ -26,46 +26,17 @@ if (isset($_GET['page'])) {
 
   <body>
   
-      <div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <span href="#" class="navbar-brand" onclick="loadPage('main')"><i class="fa fa-male"></i> Boswell</span>
-
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+          <span class="navbar-back"><i class="fa fa-arrow-left"></i></span>
+          <span class="navbar-brand" onclick="loadPage('main')"><img src="images/icon_small.png"> Boswell</span>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
-          <ul class="nav navbar-nav">
-<!--
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Show Me <span class="caret"></span></a>
-              <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><a href="../default/">Default</a></li>
-                <li class="divider"></li>
-                <li><a href="../cerulean/">Cerulean</a></li>
-                <li><a href="../cosmo/">Cosmo</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">Link</a>
-            </li>
--->
-<!--
-            <li>
-              <a href="#"><i class="fa fa-cogs"></i> Settings</a>
-            </li>
--->
-          </ul>
-
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><i class="fa fa-clock-o"></i> <span id="time"></span></a></li>
-            <li><a href="#"><i id="weather_icon"></i><i class="wi wi-thermometer"></i> <span id="weather_temperature">13</span>&deg;C</a></li>
+            <li><a><i class="fa fa-clock-o"></i> <span id="time"></span></a></li>
+            <li><a><i id="weather_icon"></i><i class="wi wi-thermometer"></i> <span id="weather_temperature">13</span>&deg;C</a></li>
           </ul>
-
-
         </div>
       </div>
     </div>
@@ -74,45 +45,32 @@ if (isset($_GET['page'])) {
     <div class="container-fluid">
       <div class="page-header page-notitle"></div>
       <div id="page_content">
-
       </div> <!-- /page_content -->
     </div> <!-- /container -->
 
+
+
     <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/velocity.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/boswell.js"></script>
     <script src="js/jquery.xml2json.js"></script>
+    <script src="js/jquery.history.js"></script>
+    <script src="js/velocity.min.js"></script>
 	  
 <script>
 $(document).ready(function(){
-  
   $('.navbar-right').hide();
   getWeather();
   getTime();
-  /*$('.navbar-right').fadeIn();*/
-  $('.navbar-right').velocity("fadeIn",{duration: 300});
+  $('.navbar-right').fadeIn();
 
-  loadPage('<?php echo $_page; ?>');
+  loadContent('<?php echo $_page; ?>');
 
-  setInterval(function(){
-    getWeather();
-  },1800000);
-  setInterval(function(){
-    getTime();
-  },60000);
+  setInterval(function(){getWeather()},1800000);
+  setInterval(function(){getTime()},60000);
 
 });
-
-function page_updateWeather(_wiclass,_temperature) {
-  $("#weather_icon").removeClass();
-  $("#weather_icon").addClass(_wiclass);
-  $("#weather_temperature").html(_temperature);
-}
-function page_updateTime(inTime) {
-  $('#time').html(inTime);
-}
 
 </script>
 </body>

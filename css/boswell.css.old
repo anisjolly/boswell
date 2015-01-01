@@ -290,7 +290,7 @@ body {
   font-size: 15px;
   line-height: 1.4;
   color: #222222;
-  background-color: #0080cc;
+  /*background-color: #ffffff;*/ background-color: #eee;
 }
 input,
 button,
@@ -6032,53 +6032,28 @@ div.row>h2 {
   margin-top:0;
 }
 
-.panel-home {
-  background: inherit;
-  border-color: transparent;
+.panel-default.panel-home {
   text-align: center;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+  padding-top: 15px;
+  padding-bottom: 30px;
 }
-.panel-home h1 {
-  font-weight: 300;
-  background: #ffffff;
-  display: inline-block;
-  text-align: center;
-  width: 114px; 
-  height: 114px; ;
-  border-radius: 50%;
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+a>.panel-default.panel-home {
+  color: #000000;
 }
-.panel-default {
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-}
-.panel-default .panel-body {
-  border: 0;
-}
-.panel-home h1 i {
+.panel-default.panel-home h1 {
   font-size: 64px;
-  margin-top: 25px;
-  color: #333333;
-}
-.panel-home h1 i.wi {
-  font-size: 55px;
-  margin-top: 35px;
+  font-weight: 300;
 }
 .page-header.page-notitle {
   border-bottom: 0;
-}
-.panel-home.selected {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  margin: -57px 0 0 -57px;
 }
 /* ------ END GENERAL FIXES ------ */
 
 
 /* ------ FIX THE NAVBAR ------ */
+.panel-home h1>i.fa, .panel-home h1>i.wi {
+  margin-right: 30px;
+}
 .navbar i.fa, .navbar i.wi {
   margin-right: 3px;
 }

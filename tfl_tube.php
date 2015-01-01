@@ -9,12 +9,14 @@ foreach ($xml->LineStatus as $key=>$line) {
   if ($line['StatusDetails']!='') {
     if ($notgood==0)
       echo '<div class="row"><h2>Disruptions</h2></div>'.chr(10);
+
+    $notgood++;
      
     if ($count==0) echo '<div class="row">'.chr(10); 
 
     echo '    <div class="col-md-4">'.chr(10);
-    echo '      <div class="panel panel-default tfltube">'.chr(10);
-    echo '        <div class="panel-heading tfltube '.$sn.'">'.chr(10);
+    echo '      <div class="panel panel-default tfltube '.$sn.'">'.chr(10);
+    echo '        <div class="panel-heading tfltube">'.chr(10);
     echo '          '.$line->Line['Name'].chr(10);
     echo '        </div>'.chr(10);
     echo '        <div class="panel-body">'.chr(10);
@@ -26,12 +28,11 @@ foreach ($xml->LineStatus as $key=>$line) {
       echo '  </div>'.chr(10);
     } else $count++;
 
-    $notgood++;
   }
 }
 if ($count>0) echo '</div>'.chr(10);
 
-if ($count<count($xml->LineStatus))
+if ($notgood<count($xml->LineStatus))
   echo '<div class="row"><h2>Good Service</h2></div>'.chr(10);
 
 $count=0;
@@ -42,8 +43,8 @@ foreach ($xml->LineStatus as $key=>$line) {
     if ($count==0) echo '<div class="row">'.chr(10);
       
     echo '    <div class="col-md-3">'.chr(10);
-    echo '      <div class="panel panel-default tfltube">'.chr(10);
-    echo '        <div class="panel-heading tfltube '.$sn.'">'.chr(10);
+    echo '      <div class="panel panel-default tfltube '.$sn.'">'.chr(10);
+    echo '        <div class="panel-heading tfltube">'.chr(10);
     echo '          '.$line->Line['Name'].chr(10);
     echo '        </div>'.chr(10);
     echo '        <div class="panel-body">'.chr(10);

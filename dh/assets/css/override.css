@@ -1,0 +1,44 @@
+@import url(../font/stylesheet.css);
+
+header.header div.container h1.logo {
+} 
+
+
+section#promo div.container img {
+}
+section#promo {
+  padding-top: 100px;
+}
+section#promo div.container h2.title {
+  font-family: phillg_narrowmedium;
+  color: #074f66;
+  margin: -5px 0 0 0;
+}
+section#promo div.container h2.title span.highlight {
+  color: #ffff40;
+}
+section#promo div.container div.btns {
+  margin: 10px 0 0 0;
+}
+section#promo div.container div.btns a.btn {
+  margin: 0 5px;
+}
+section#promo div.container div.btns a.btn.btn-cta-primary {
+}
+section#promo div.container div.btns a.btn.btn-cta-secondary {
+  background-color: #ffff40;
+  border-color: #ffff40;
+  color: #074f66;
+}
+.promo .permalink {
+  background: #0c86ae;
+  color: #ffffff;
+  padding: 10px 0;
+  margin: 0 auto;
+}
+.promo .permalink p {
+  margin-top: 7px;
+}
+.promo .permalink p a {
+  color: #ffff40;
+}
